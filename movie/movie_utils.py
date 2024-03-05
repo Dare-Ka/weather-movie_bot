@@ -1,16 +1,17 @@
-import requests
-import json
 from movie.movie_text import movie_types_dict, movie_description
-from settings import config
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram import types
 import unicodedata
+import logging
+import os
+import requests
+import json
 
 
 async def get_random_movie(genre_name: str) -> (str, list, list, str):
     """Get random movie from Kinopoisk by genre"""
     try:
-        headers = {'X-API-KEY': config.kinopoisk_token}
+        headers = {'X-API-KEY': os.getenv('API_KINOPOISK_TOKEN')}
         url_kinopoisk = f'https://api.kinopoisk.dev/v1.4/movie/random'
         params = {
             'genres.name': genre_name,
@@ -79,14 +80,15 @@ async def get_random_movie(genre_name: str) -> (str, list, list, str):
                 rating=round(data["rating"]["kp"], 1)
             )
         return movie, trailers_kb, trailers, poster
-    except Exception:
+    except Exception as e:
+        logging.error(e)
         return None
 
 
 async def get_movie_description(name: str) -> list | None:
     """Get movie description by name"""
     try:
-        headers = {'X-API-KEY': config.kinopoisk_token}
+        headers = {'X-API-KEY': os.getenv('API_KINOPOISK_TOKEN')}
         url_kinopoisk = 'https://api.kinopoisk.dev/v1.3/movie'
         params = {
             'name': name,
@@ -171,5 +173,6 @@ async def get_movie_description(name: str) -> list | None:
                 )
             result.append([movie, trailers, trailers_kb, poster])
         return result
-    except Exception:
-        return None
+    except Exception as e:
+        logging.error(e)
+        return []

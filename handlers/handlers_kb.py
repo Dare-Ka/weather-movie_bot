@@ -11,7 +11,9 @@ imenu = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Пог
                                               [InlineKeyboardButton(text='Что на ужин🍽',
                                                                     callback_data='random_meal'),
                                               InlineKeyboardButton(text='Напомни мне📔',
-                                                                   callback_data='create_event')]])
+                                                                   callback_data='create_event')],
+                                              [InlineKeyboardButton(text='Настройки⚙️',
+                                                                    callback_data='settings')]])
 
 menu_kb = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='Меню')]], resize_keyboard=True)
 

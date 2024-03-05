@@ -1,16 +1,16 @@
 import requests
 import json
-from settings import config
 from weather.weather_text import weather_dict, weather_description
 from datetime import datetime
+import os
 
 
 async def get_weather_today(city: str) -> str | None:
     """Get weather description by city name for today"""
     try:
         weather_today = requests.get(f'https://api.openweathermap.org'
-                                     f'/data/2.5/forecast?q={city}&'
-                                     f'lang=ru&cnt=5&appid={config.API_weather}&units=metric')
+                                     f'/data/2.5/forecast?q={city.strip().lower()}&'
+                                     f'lang=ru&cnt=5&appid={os.getenv("API_WEATHER_TOKEN")}&units=metric')
         temp_list = []
         feel_temp_list = []
         time_list = []
@@ -36,16 +36,16 @@ async def get_weather_today(city: str) -> str | None:
                 status=status_list[i],
                 wind_speed=round(wind_speed[i], 1)
             )
-        return f'Вот какая погода сегодня в городе <u>{city.capitalize()}</u>:\n\n' + description
+        return f'Вот какая погода сегодня в городе <u>{city}</u>:\n\n' + description
     except Exception:
-        return None
+        return []
 
 
 async def get_weather_three_days(city: str) -> (str, str, str):
     """Get weather description by city for three days"""
     try:
         weather_today = requests.get(
-            f'https://api.openweathermap.org/data/2.5/forecast?q={city}&lang=ru&&appid={config.API_weather}&units=metric')
+            f'https://api.openweathermap.org/data/2.5/forecast?q={city.strip().lower()}&lang=ru&&appid={os.getenv("API_WEATHER_TOKEN")}&units=metric')
         temp_list = [[], [], []]
         feel_temp_list = [[], [], []]
         time_list = [[], [], []]
@@ -107,9 +107,9 @@ async def get_weather_three_days(city: str) -> (str, str, str):
                 status=status_list[2][i],
                 wind_speed=round(wind_speed[2][i], 1)
             )
-        day_1 = f'Вот какая погода <u>сегодня</u> в городе <u>{city.capitalize()}</u>:\n\n' + description[0]
-        day_2 = f'Вот какая погода <u>завтра</u> в городе {city.capitalize()}:\n\n' + description[1]
-        day_3 = f'Вот какая погода <u>послезавтра</u> в городе {city.capitalize()}:\n\n' + description[2]
+        day_1 = f'Вот какая погода <u>сегодня</u> в городе <u>{city}</u>:\n\n' + description[0]
+        day_2 = f'Вот какая погода <u>завтра</u> в городе {city}:\n\n' + description[1]
+        day_3 = f'Вот какая погода <u>послезавтра</u> в городе {city}:\n\n' + description[2]
         return day_1, day_2, day_3
     except Exception:
         return None

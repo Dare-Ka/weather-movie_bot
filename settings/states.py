@@ -16,3 +16,8 @@ class Gen(StatesGroup):
 class Scheduler(StatesGroup):
     date = State()
     event = State()
+
+
+class Settings(StatesGroup):
+    mailing = State()
+    city = State()

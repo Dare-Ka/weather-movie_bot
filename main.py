@@ -2,10 +2,10 @@ import events.events_handler
 import handlers.handlers
 import meal.meal_handler
 import movie.movie_handler
+import settings.settings_handler
 import weather.weather_handler
 import admin.admin_handler
-from settings import config
-from events.events import good_night, good_morning, happy_ny, donate
+from events.events import good_night, good_morning, happy_ny, donate, good_vacation
 from settings.apschedulermiddleware import SchedulerMiddleware
 import asyncio
 import logging
@@ -16,10 +16,11 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from aiogram.fsm.storage.redis import RedisStorage
 from apscheduler.jobstores.redis import RedisJobStore
 from apscheduler_di import ContextSchedulerDecorator
+import os
 
 
 async def main():
-    bot = Bot(token=config.Bot_token)
+    bot = Bot(token=os.getenv('BOT_TOKEN'))
     storage = RedisStorage.from_url('redis://localhost:6379/0')
     dp = Dispatcher(storage=storage)
     jobstores = {
@@ -35,6 +36,7 @@ async def main():
     dp.include_router(movie.movie_handler.router)
     dp.include_router(weather.weather_handler.router)
     dp.include_router(admin.admin_handler.router)
+    dp.include_router(settings.settings_handler.router)
     scheduler = ContextSchedulerDecorator(AsyncIOScheduler(timezone='Europe/Moscow', jobstores=jobstores))
     scheduler.ctx.add_instance(bot, declared_class=Bot)
     dp.message.middleware(ChatActionMiddleware())
@@ -50,10 +52,19 @@ async def main():
     if not scheduler.get_job('good_morning'):
         scheduler.add_job(good_morning,
                           trigger='cron',
+                          day_of_week='0-4',
                           hour='08',
                           minute='00',
                           start_date=datetime.datetime.now(),
                           id='good_morning')
+    if not scheduler.get_job('good_vacation'):
+        scheduler.add_job(good_vacation,
+                          trigger='cron',
+                          day_of_week='5-6',
+                          hour='09',
+                          minute='00',
+                          start_date=datetime.datetime.now(),
+                          id='good_vacation')
     if not scheduler.get_job('happy_ny'):
         scheduler.add_job(happy_ny,
                           trigger='cron',

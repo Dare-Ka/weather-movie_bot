@@ -1,6 +1,6 @@
 from admin.admin import error_handler
 from weather.weather_utils import get_weather_today, get_weather_three_days
-from weather.weather_kb import sities, url
+from weather.weather_kb import cities, url
 from weather.weather_text import weather_error
 from settings.states import Gen
 from handlers.handlers_kb import menu_kb, iexit_kb
@@ -27,17 +27,17 @@ async def ask_city(callback: types.CallbackQuery, state: FSMContext):
     await state.set_state(Gen.weather_today)
     await asyncio.sleep(0.2)
     await callback.message.answer("Привет, рад тебя видеть! Выбери город из предложенных или введи нужный",
-                                  reply_markup=sities)
+                                  reply_markup=cities)
 
 
 @router.message(Gen.weather_today, flags={'chat_action': 'typing'})
 async def weather_today(message: types.Message, state: FSMContext, bot: Bot):
     try:
-        await state.update_data(city=message.text.strip().lower())
+        await state.update_data(city=message.text)
         context_data = await state.get_data()
         city = context_data.get('city')
         res = await get_weather_today(city)
-        if res is None:
+        if len(res) == 0:
             await asyncio.sleep(0.2)
             await message.reply(weather_error, reply_markup=iexit_kb)
             await state.clear()
@@ -65,13 +65,13 @@ async def ask_city(callback: types.CallbackQuery, state: FSMContext):
     await state.set_state(Gen.three_days_weather)
     await asyncio.sleep(0.2)
     await callback.message.answer("Привет, рад тебя видеть! Выбери город из предложенных или введи нужный",
-                                  reply_markup=sities)
+                                  reply_markup=cities)
 
 
 @router.message(Gen.three_days_weather, flags={'chat_action': 'typing'})
 async def weather_three_days(message: types.Message, state: FSMContext, bot: Bot):
     try:
-        await state.update_data(city=message.text.strip().lower())
+        await state.update_data(city=message.text)
         context_data = await state.get_data()
         city = context_data.get('city')
         res = await get_weather_three_days(city)

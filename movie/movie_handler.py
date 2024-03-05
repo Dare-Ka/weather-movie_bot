@@ -82,7 +82,7 @@ async def movie_description(message: types.Message, state: FSMContext, bot: Bot)
     context_data = await state.get_data()
     name = context_data.get('name')
     movies = await get_movie_description(name)
-    if movies is None:
+    if len(movies) == 0:
         await asyncio.sleep(0.2)
         await message.answer(movie_error, reply_markup=iexit_kb)
     for description in movies:
@@ -99,5 +99,4 @@ async def movie_description(message: types.Message, state: FSMContext, bot: Bot)
                 await message.answer('Трейлера, к сожалению, нет', reply_markup=iexit_kb)
         except Exception as error:
             await error_handler('get_movie_description:\n' + str(error), bot)
-            await state.clear()
     await state.clear()

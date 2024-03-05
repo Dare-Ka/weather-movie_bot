@@ -1,10 +1,10 @@
 from settings.states import Gen
-from settings import config
 from admin.admin_kb import admin_kb, iexit_kb, imenu
 from admin.admin_text import menu_text
 from admin.admin import error_handler
 from db.db import get_users_info, delete_user
 import asyncio
+import os
 from aiogram import Bot, F, types, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.exceptions import AiogramError
@@ -15,11 +15,11 @@ router = Router()
 
 @router.message(F.text == 'Админ панель', flags={'chat_action': 'typing'})
 async def admin_panel(message: types.Message, bot: Bot):
-    if message.from_user.id == config.admin_id:
+    if message.from_user.id == int(os.getenv('ADMIN_ID')):
         await message.answer(text='Привет, это панель администратора!', reply_markup=admin_kb)
     else:
         await message.answer(text='Ты не админ!', reply_markup=iexit_kb)
-        await bot.send_message(chat_id=config.admin_id,
+        await bot.send_message(chat_id=int(os.getenv('ADMIN_ID')),
                                text=f'Нас пытаются взломать!\n'
                                     f'ID: {message.from_user.id}\n'
                                     f'Имя: {message.from_user.first_name}\n'
@@ -46,7 +46,7 @@ async def send_mailing(message: types.Message, state: FSMContext, bot: Bot):
             await error_handler(str(error), bot)
             await error_handler(error=f'Проблаема с пользователем:\nИмя: {tg_id[1]}\nID: {tg_id[0]}', bot=bot)
             await asyncio.sleep(0.1)
-    await bot.send_message(chat_id=config.admin_id, text='Рассылка завершена!', reply_markup=admin_kb)
+    await bot.send_message(chat_id=int(os.getenv('ADMIN_ID')), text='Рассылка завершена!', reply_markup=admin_kb)
     await state.clear()
 
 
@@ -82,7 +82,7 @@ async def send_message(message: types.Message, state: FSMContext, bot: Bot):
     text = context_data.get('text')
     tg_id = context_data.get('tg_id')
     await bot.send_message(chat_id=tg_id, text=text)
-    await bot.send_message(chat_id=config.admin_id, text='Сообщение отправлено!', reply_markup=admin_kb)
+    await bot.send_message(chat_id=int(os.getenv('ADMIN_ID')), text='Сообщение отправлено!', reply_markup=admin_kb)
     await state.clear()
 
 
