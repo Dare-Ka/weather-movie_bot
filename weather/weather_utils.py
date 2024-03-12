@@ -1,7 +1,9 @@
+from events.events_text import donate_reminder, ad_bot
 import requests
 import json
 from weather.weather_text import weather_dict, weather_description
 from datetime import datetime
+from random import randint
 import os
 
 
@@ -36,7 +38,13 @@ async def get_weather_today(city: str) -> str | None:
                 status=status_list[i],
                 wind_speed=round(wind_speed[i], 1)
             )
-        return f'Вот какая погода сегодня в городе <u>{city}</u>:\n\n' + description
+        if randint(0, 100) < 5:
+            donate = donate_reminder
+        elif randint(0, 100) < 10:
+            donate = ad_bot
+        else:
+            donate = ''
+        return f'Вот какая погода сегодня в городе <u>{city}</u>:\n\n' + description + donate
     except Exception:
         return []
 
@@ -107,9 +115,15 @@ async def get_weather_three_days(city: str) -> (str, str, str):
                 status=status_list[2][i],
                 wind_speed=round(wind_speed[2][i], 1)
             )
+        if randint(0, 100) < 5:
+            donate = donate_reminder
+        elif randint(0, 100) < 10:
+            donate = ad_bot
+        else:
+            donate = ''
         day_1 = f'Вот какая погода <u>сегодня</u> в городе <u>{city}</u>:\n\n' + description[0]
         day_2 = f'Вот какая погода <u>завтра</u> в городе {city}:\n\n' + description[1]
-        day_3 = f'Вот какая погода <u>послезавтра</u> в городе {city}:\n\n' + description[2]
+        day_3 = f'Вот какая погода <u>послезавтра</u> в городе {city}:\n\n' + description[2] + donate
         return day_1, day_2, day_3
     except Exception:
         return None

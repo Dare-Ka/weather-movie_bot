@@ -29,6 +29,10 @@ donate_schedule = ('Привет, это админ!\n'
                    'что-то добавить / исправить — ссылка на админа есть в описании бота.\n'
                    'Обнял!')
 
+donate_reminder = '<i>\nНе забывай про возможность поддержать разработчика через /donate 😉</i>'
+
+ad_bot = '<i>\nНравится бот? Расскажи про него другим:\n</i>' + r'https://t.me/Hurper_bot'
+
 good_night_stickers = [r'CAACAgIAAxkBAAEKPc5k-bnT_erHRTCw57psgtNup-LlFAACIgMAAlwCZQMxLtsffrNtuTAE',
                        r'CAACAgIAAxkBAAEKPdBk-bnc3Djb15qSxpiSvF5rPaNwtgACVQwAA49hS-nhW2NNaTsBMAQ',
                        r'CAACAgIAAxkBAAEKPdJk-bnfXpbCxSQVvZDwgpeNECcnRgACygsAAsWP6Eu6QXCvkdpvizAE',

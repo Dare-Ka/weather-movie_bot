@@ -31,12 +31,12 @@ async def mailing_settings(message: Message, state: FSMContext, bot: Bot):
     mailing = context_data.get('mailing')
     if mailing.strip().lower() == 'да':
         await asyncio.sleep(0.2)
-        await message.answer('Выбери город для утренней рассылки погоды', reply_markup=cities)
+        await message.answer('Выбери город для утренней рассылки погоды или введи свой', reply_markup=cities)
         await state.set_state(Settings.city)
-    else:
+    elif mailing.strip().lower() == 'нет':
         try:
             await add_settings(tg_id=message.from_user.id, mailing=0, city='NULL')
-            await message.answer(text='Сохранил настройки!\n'
+            await message.answer(text='Запомнил!\n'
                                       'Настройки в любой момент можно изменить😉',
                                  reply_markup=menu_kb)
             await state.clear()

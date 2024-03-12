@@ -5,8 +5,9 @@ import movie.movie_handler
 import settings.settings_handler
 import weather.weather_handler
 import admin.admin_handler
+from middleware.throttlingmiddleware import ThrottlingMessageMiddleware, ThrottlingCallBackMiddleware
 from events.events import good_night, good_morning, happy_ny, donate, good_vacation
-from settings.apschedulermiddleware import SchedulerMiddleware
+from middleware.apschedulermiddleware import SchedulerMiddleware
 import asyncio
 import logging
 import datetime
@@ -22,6 +23,8 @@ import os
 async def main():
     bot = Bot(token=os.getenv('BOT_TOKEN'))
     storage = RedisStorage.from_url('redis://localhost:6379/0')
+    message_throttling_storage = RedisStorage.from_url('redis://localhost:6379/1')
+    callback_throttling_storage = RedisStorage.from_url('redis://localhost:6379/3')
     dp = Dispatcher(storage=storage)
     jobstores = {
         'default': RedisJobStore(jobs_key='dispatched_trips_job',
@@ -30,6 +33,8 @@ async def main():
                                  port=6379,
                                  db=2)
     }
+    dp.message.middleware.register(ThrottlingMessageMiddleware(storage=message_throttling_storage))
+    dp.callback_query.middleware.register(ThrottlingCallBackMiddleware(storage=callback_throttling_storage))
     dp.include_router(handlers.handlers.router)
     dp.include_router(events.events_handler.router)
     dp.include_router(meal.meal_handler.router)
