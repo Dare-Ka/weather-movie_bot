@@ -1,18 +1,18 @@
 from events.events_text import donate_reminder, ad_bot
+import config
 import requests
 import json
 from weather.weather_text import weather_dict, weather_description
 from datetime import datetime
 from random import randint
-import os
 
 
-async def get_weather_today(city: str) -> str | None:
+async def get_weather_today(city: str) -> str | list:
     """Get weather description by city name for today"""
     try:
         weather_today = requests.get(f'https://api.openweathermap.org'
                                      f'/data/2.5/forecast?q={city.strip().lower()}&'
-                                     f'lang=ru&cnt=5&appid={os.getenv("API_WEATHER_TOKEN")}&units=metric')
+                                     f'lang=ru&cnt=5&appid={config.API_WEATHER_TOKEN}&units=metric')
         temp_list = []
         feel_temp_list = []
         time_list = []
@@ -53,7 +53,7 @@ async def get_weather_three_days(city: str) -> (str, str, str):
     """Get weather description by city for three days"""
     try:
         weather_today = requests.get(
-            f'https://api.openweathermap.org/data/2.5/forecast?q={city.strip().lower()}&lang=ru&&appid={os.getenv("API_WEATHER_TOKEN")}&units=metric')
+            f'https://api.openweathermap.org/data/2.5/forecast?q={city.strip().lower()}&lang=ru&&appid={config.API_WEATHER_TOKEN}&units=metric')
         temp_list = [[], [], []]
         feel_temp_list = [[], [], []]
         time_list = [[], [], []]

@@ -1,10 +1,9 @@
 from admin.admin import error_handler
 from weather.weather_utils import get_weather_today, get_weather_three_days
-from weather.weather_kb import cities, url
+from weather.weather_kb import cities_kb, url
 from weather.weather_text import weather_error
 from settings.states import Gen
 from handlers.handlers_kb import menu_kb, iexit_kb
-from db.db import update_user
 import asyncio
 from aiogram import types, F, Bot, Router
 from aiogram.fsm.context import FSMContext
@@ -14,20 +13,9 @@ router = Router()
 
 @router.callback_query(F.data == 'weather_today', flags={'chat_action': 'typing'})
 async def ask_city(callback: types.CallbackQuery, state: FSMContext):
-    if callback.from_user.username:
-        await update_user(tg_id=callback.from_user.id,
-                          tg_name=callback.from_user.first_name,
-                          username='@' + callback.from_user.username
-                          )
-    else:
-        await update_user(tg_id=callback.from_user.id,
-                          tg_name=callback.from_user.first_name,
-                          username='Скрыто'
-                          )
+    await callback.message.answer('Выбери город из предложенных или введи нужный',
+                                  reply_markup=cities_kb)
     await state.set_state(Gen.weather_today)
-    await asyncio.sleep(0.2)
-    await callback.message.answer("Привет, рад тебя видеть! Выбери город из предложенных или введи нужный",
-                                  reply_markup=cities)
 
 
 @router.message(Gen.weather_today, flags={'chat_action': 'typing'})
@@ -52,20 +40,9 @@ async def weather_today(message: types.Message, state: FSMContext, bot: Bot):
 
 @router.callback_query(F.data == 'weather_three_days', flags={'chat_action': 'typing'})
 async def ask_city(callback: types.CallbackQuery, state: FSMContext):
-    if callback.from_user.username:
-        await update_user(tg_id=callback.from_user.id,
-                          tg_name=callback.from_user.first_name,
-                          username='@' + callback.from_user.username
-                          )
-    else:
-        await update_user(tg_id=callback.from_user.id,
-                          tg_name=callback.from_user.first_name,
-                          username='Скрыто'
-                          )
+    await callback.message.answer('Выбери город из предложенных или введи нужный',
+                                  reply_markup=cities_kb)
     await state.set_state(Gen.three_days_weather)
-    await asyncio.sleep(0.2)
-    await callback.message.answer("Привет, рад тебя видеть! Выбери город из предложенных или введи нужный",
-                                  reply_markup=cities)
 
 
 @router.message(Gen.three_days_weather, flags={'chat_action': 'typing'})

@@ -1,4 +1,4 @@
-from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
+from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
 
 settings = [[KeyboardButton(text='Да')],
             [KeyboardButton(text='Нет')],
@@ -9,3 +9,5 @@ settings_kb = ReplyKeyboardMarkup(keyboard=settings,
                                   one_time_keyboard=True)
 
 menu_kb = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='Меню')]], resize_keyboard=True)
+
+again = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Настройки⚙️', callback_data='settings')]])

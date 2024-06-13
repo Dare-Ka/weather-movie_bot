@@ -3,7 +3,6 @@ from settings.states import Scheduler
 from events.events import reminder
 from events.events_kb import times_kb, reminder_back
 from events.events_text import send_message
-from db.db import update_user
 import asyncio
 from random import choice
 from aiogram import types, F, Bot, Router
@@ -18,18 +17,7 @@ router = Router()
 
 @router.callback_query(F.data == 'create_event', flags={'chat_action': 'typing'})
 async def ask_date(callback: types.CallbackQuery, state: FSMContext):
-    if callback.from_user.username:
-        await update_user(tg_id=callback.from_user.id,
-                          tg_name=callback.from_user.first_name,
-                          username='@' + callback.from_user.username
-                          )
-    else:
-        await update_user(tg_id=callback.from_user.id,
-                          tg_name=callback.from_user.first_name,
-                          username='Скрыто'
-                          )
-    await asyncio.sleep(0.2)
-    await callback.message.answer('Привет! Через сколько часов напомнить?')
+    await callback.message.edit_text('Привет!\nЧерез сколько часов напомнить?')
     await callback.message.answer_sticker(sticker=choice(send_message),
                                           reply_markup=times_kb
                                           )
@@ -46,7 +34,7 @@ async def ask_event(message: Message, state: FSMContext, bot: Bot):
         await state.set_state(Scheduler.event)
     except Exception as error:
         await message.answer('Произошла ошибка..😔\n'
-                             'Попроуем еще раз?',
+                             'Попробуем еще раз?',
                              parse_mode="HTML",
                              reply_markup=reminder_back
                              )

@@ -66,3 +66,9 @@ love_sticker = [r'CAACAgIAAxkBAAEKN91k9ecNuxKy-LUsYypsq3UgtlbD1AACXwAD5KDOB8EFQl
 
 send_message = [r'CAACAgIAAxkBAAEKTTVlBB5DDdlTGkOEMwg-7pAXfGlV9wACngADwZxgDN22u7RWLgjJMAQ',
                 r'CAACAgIAAxkBAAEKb99lGtgplKk4KwVp9dtnVgKg4CKbygACBRAAAn-WSEirjcU2x7PvmTAE']
+
+NY_photo = r'https://s5.stc.all.kpcdn.net/family/wp-content/uploads/2023/12/snapedit_1701747980784.jpg'
+
+movie_mailing_text = 'Привет👋\nЭто ежедневная рекомендация фильмов на вечер'
+
+genres = ['комедия', 'драма', 'триллер', 'детектив', 'фантастика', 'боевик', 'вестерн', 'семейный', 'фэнтези']

@@ -1,51 +1,59 @@
-from movie.movie_text import movie_types_dict, movie_description
+from movie.movie_text import movie_types_dict, movie_description, random_movie_description
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram import types
 import unicodedata
 import logging
-import os
 import requests
 import json
+import config
 
 
-async def get_random_movie(genre_name: str) -> (str, list, list, str):
-    """Get random movie from Kinopoisk by genre"""
+async def get_random_movie(genre_name: str, movie_type='movie') -> (str, list, list, str):
+    """Get random movie from Kinopoisk by genre and movie type"""
     try:
-        headers = {'X-API-KEY': os.getenv('API_KINOPOISK_TOKEN')}
-        url_kinopoisk = f'https://api.kinopoisk.dev/v1.4/movie/random'
-        params = {
-            'genres.name': genre_name,
-            'rating.kp': '6-10',
-            'countries.name': ['!Россия',
-                               '!Беларусь',
-                               '!Индия',
-                               '!Азербайджан',
-                               '!Таджикистан',
-                               '!Узбекистан',
-                               '!Украина',
-                               '!Иран',
-                               '!Египет',
-                               '!СССР',
-                               '!Казахстан',
-                               '!Киргизия',
-                               '!Туркменистан',
-                               '!Турция'],
-            'notNullFields': ['name',
-                              'names.name',
-                              'description',
-                              'shortDescription',
-                              'countries.name',
-                              'genres.name',
-                              'poster.url',
-                              'persons.name']
-        }
-        random_movie = requests.get(url_kinopoisk, params=params, headers=headers)
+        for token in config.API_KINOPOISK_TOKEN_LIST:
+            headers = {'X-API-KEY': token}
+            url_kinopoisk = f'https://api.kinopoisk.dev/v1.4/movie/random'
+            params = {
+                'genres.name': genre_name,
+                'rating.kp': '6-10',
+                'countries.name': ['!Россия',
+                                   '!Беларусь',
+                                   '!Индия',
+                                   '!Азербайджан',
+                                   '!Таджикистан',
+                                   '!Узбекистан',
+                                   '!Украина',
+                                   '!Иран',
+                                   '!Египет',
+                                   '!СССР',
+                                   '!Казахстан',
+                                   '!Киргизия',
+                                   '!Туркменистан',
+                                   '!Турция'],
+                'notNullFields': ['name',
+                                  'names.name',
+                                  'description',
+                                  'shortDescription',
+                                  'countries.name',
+                                  'genres.name',
+                                  'poster.url',
+                                  'persons.name'],
+                'type': movie_type
+            }
+            random_movie = requests.get(url_kinopoisk, params=params, headers=headers)
+            if random_movie.status_code == 200:
+                break
+            else:
+                continue
         trailers = []
         data = json.loads(random_movie.text)
         persons = [person['name'] for person in data['persons']
                    if person['profession'] == 'актеры' and person['name'] is not None]
-        if data['poster']['url'] is not None:
+        if data['poster'] and data['poster']['url']:
             poster = data['poster']['url']
+        else:
+            poster = types.FSInputFile(r'/my_bots/Harper/movie/movie_pic.jpg')
         if 'videos' in data.keys() and len(data['videos']['trailers']) > 0:
             for trailer in data['videos']['trailers']:
                 trailers.append([InlineKeyboardButton(text=f'{trailer["name"]}', url=f'{trailer["url"]}')])
@@ -55,7 +63,7 @@ async def get_random_movie(genre_name: str) -> (str, list, list, str):
         description = unicodedata.normalize("NFKD", data["description"])
         length = str(data["seriesLength"]) if data['isSeries'] == True else str(data["movieLength"])
         type_ = movie_types_dict[data['type']]
-        movie = 'Зацени это😎\n' + movie_description.format(
+        movie = 'Зацени это😎\n' + random_movie_description.format(
             name=data["name"],
             countries=", ".join(countries),
             genres=", ".join(genres),
@@ -68,7 +76,7 @@ async def get_random_movie(genre_name: str) -> (str, list, list, str):
         )
         if len(movie) - movie.count('<') - movie.count('>') - movie.count('u') - movie.count('b') - movie.count('/') > 1024:
             short_description = data['shortDescription']
-            movie = 'Зацени это😎\n' + movie_description.format(
+            movie = 'Зацени это😎\n' + random_movie_description(
                 name=data["name"],
                 countries=", ".join(countries),
                 genres=", ".join(genres),
@@ -88,54 +96,34 @@ async def get_random_movie(genre_name: str) -> (str, list, list, str):
 async def get_movie_description(name: str) -> list | None:
     """Get movie description by name"""
     try:
-        headers = {'X-API-KEY': os.getenv('API_KINOPOISK_TOKEN')}
-        url_kinopoisk = 'https://api.kinopoisk.dev/v1.3/movie'
-        params = {
-            'name': name,
-            'selectFields': ['name',
-                             'description',
-                             'shortDescription',
-                             'isSeries',
-                             'year',
-                             'rating',
-                             'movieLength',
-                             'seriesLength',
-                             'genres',
-                             'countries',
-                             'poster',
-                             'videos',
-                             'persons',
-                             'type'],
-            'notNullFields': ['name',
-                              'description',
-                              'countries.name',
-                              'genres.name',
-                              'poster.url',
-                              'persons.name'],
-            'countries.name': ['!Индия',
-                               '!Азербайджан',
-                               '!Таджикистан',
-                               '!Узбекистан',
-                               '!Украина',
-                               '!Иран',
-                               '!Египет'],
-            'limit': 5,
-            'page': 1
-        }
-        movies = requests.get(url_kinopoisk, params=params, headers=headers)
+        for token in config.API_KINOPOISK_TOKEN_LIST:
+            headers = {'X-API-KEY': token}
+            url_kinopoisk = 'https://api.kinopoisk.dev/v1.4/movie/search'
+            params = {
+                'query': name,
+                'limit': 5,
+                'page': 1
+            }
+            movies = requests.get(url_kinopoisk, params=params, headers=headers)
+            if movies.status_code == 200:
+                break
+            else:
+                continue
         result = []
         data = json.loads(movies.text)
         for film in data['docs']:
-            trailers = []
-            trailers_kb = ''
-            persons = [person['name'] for person in film['persons']
-                       if person['profession'] == 'актеры' and person['name'] is not None]
-            if film['poster'] is not None:
+            link = []
+            if film['isSeries'] == True:
+                link.append([InlineKeyboardButton(text='КиноПоиск',
+                                                  url=f'https://www.kinopoisk.ru/series/{film["id"]}/')])
+            else:
+                link.append([InlineKeyboardButton(text='КиноПоиск',
+                                                  url=f'https://www.kinopoisk.ru/film/{film["id"]}/')])
+            link_kb = InlineKeyboardMarkup(inline_keyboard=link)
+            if film['poster'] and film['poster']['url']:
                 poster = types.URLInputFile(film['poster']['url'], filename=f'{film["name"]}.png')
-            if 'videos' in film.keys() and len(film['videos']['trailers']) > 0:
-                for trailer in film['videos']['trailers']:
-                    trailers.append([InlineKeyboardButton(text=f'{film["name"]}', url=f'{trailer["url"]}')])
-                trailers_kb = InlineKeyboardMarkup(inline_keyboard=trailers)
+            else:
+                poster = types.FSInputFile(r'/my_bots/Harper/movie/movie_pic.jpg')
             genres = [genre['name'] for genre in film['genres'] if genre['name'] is not None]
             countries = [country['name'] for country in film['countries'] if country['name'] is not None]
             if film["description"] is not None:
@@ -150,12 +138,12 @@ async def get_movie_description(name: str) -> list | None:
                 genres=", ".join(genres),
                 type=type_,
                 description=description,
-                persons=", ".join(persons),
                 length=length,
                 year=film["year"],
                 rating=round(film["rating"]["kp"], 1)
             )
-            if len(movie) - movie.count('<') - movie.count('>') - movie.count('u') - movie.count('b') - movie.count('/') > 1024:
+            if len(movie) - movie.count('<') - movie.count('>') - movie.count('u') - movie.count('b') - movie.count(
+                    '/') > 1024:
                 if film["shortDescription"] is not None:
                     short_description = unicodedata.normalize("NFKD", film["shortDescription"])
                 else:
@@ -166,13 +154,13 @@ async def get_movie_description(name: str) -> list | None:
                     genres=", ".join(genres),
                     type=type_,
                     description=short_description,
-                    persons=", ".join(persons),
                     length=length,
                     year=film["year"],
                     rating=round(film["rating"]["kp"], 1)
                 )
-            result.append([movie, trailers, trailers_kb, poster])
+            result.append([movie, poster, link_kb])
         return result
     except Exception as e:
         logging.error(e)
         return []
+

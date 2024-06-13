@@ -1,3 +1,4 @@
+import config
 import events.events_handler
 import handlers.handlers
 import meal.meal_handler
@@ -5,8 +6,9 @@ import movie.movie_handler
 import settings.settings_handler
 import weather.weather_handler
 import admin.admin_handler
+from db.models import db, backup_db
 from middleware.throttlingmiddleware import ThrottlingMessageMiddleware, ThrottlingCallBackMiddleware
-from events.events import good_night, good_morning, happy_ny, donate, good_vacation
+from events.events import good_night, good_morning, happy_ny, donate, good_vacation, movie_mailing
 from middleware.apschedulermiddleware import SchedulerMiddleware
 import asyncio
 import logging
@@ -17,15 +19,26 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from aiogram.fsm.storage.redis import RedisStorage
 from apscheduler.jobstores.redis import RedisJobStore
 from apscheduler_di import ContextSchedulerDecorator
-import os
+
+
+async def start_bot(bot: Bot):
+    await bot.send_message(chat_id=config.ADMIN_ID, text='Бот запущен!')
+    await db.create_table()
+    await backup_db.create_table()
+
+
+async def stop_bot(bot: Bot):
+    await bot.send_message(chat_id=config.ADMIN_ID, text='Бот остановлен!')
 
 
 async def main():
-    bot = Bot(token=os.getenv('BOT_TOKEN'))
+    bot = Bot(token=config.TESTBOT_TOKEN)
     storage = RedisStorage.from_url('redis://localhost:6379/0')
     message_throttling_storage = RedisStorage.from_url('redis://localhost:6379/1')
     callback_throttling_storage = RedisStorage.from_url('redis://localhost:6379/3')
     dp = Dispatcher(storage=storage)
+    dp.startup.register(start_bot)
+    dp.shutdown.register(stop_bot)
     jobstores = {
         'default': RedisJobStore(jobs_key='dispatched_trips_job',
                                  run_times_key='dispatched_trips_running',
@@ -70,10 +83,17 @@ async def main():
                           minute='00',
                           start_date=datetime.datetime.now(),
                           id='good_vacation')
+    if not scheduler.get_job('movie_mailing'):
+        scheduler.add_job(movie_mailing,
+                          trigger='cron',
+                          hour='18',
+                          minute='00',
+                          start_date=datetime.datetime.now(),
+                          id='movie_mailing')
     if not scheduler.get_job('happy_ny'):
         scheduler.add_job(happy_ny,
                           trigger='cron',
-                          month='12',
+                          month='04',
                           day='31',
                           hour='23',
                           minute='59',
@@ -82,7 +102,7 @@ async def main():
     if not scheduler.get_job('donate'):
         scheduler.add_job(donate,
                           trigger='cron',
-                          day='21',
+                          day='3rd thu',
                           hour='17',
                           minute='00',
                           start_date=datetime.datetime.now(),
