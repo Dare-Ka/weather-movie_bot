@@ -42,7 +42,7 @@ async def good_morning(bot: Bot) -> None:
                                    )
             if city:
                 weather = await get_weather_today(city)
-                await bot.send_message(chat_id=tg_id[0],
+                await bot.send_message(chat_id=tg_id,
                                        text=weather,
                                        reply_markup=url,
                                        parse_mode='HTML')
@@ -81,20 +81,20 @@ async def good_night(bot: Bot) -> None:
 
 async def movie_mailing(bot: Bot) -> None:
     """Send random movie to users"""
-    movie = await get_random_movie(choice(genres))
+    res= await get_random_movie(genre_name=choice(genres))
     for tg_id, tg_name, city in await db.get_mailing_users():
         try:
             await bot.send_message(chat_id=tg_id,
                                    text=movie_mailing_text)
             await bot.send_photo(chat_id=tg_id,
-                                 photo=movie[3],
-                                 caption=movie[0],
+                                 photo=res[3],
+                                 caption=res[0],
                                  reply_markup=menu_kb,
                                  parse_mode='HTML')
-            if len(movie[2]) != 0:
+            if len(res[2]) != 0:
                 await bot.send_message(chat_id=tg_id,
                                        text='Не понял описание? Посмотри трейлер🔥',
-                                       reply_markup=movie[1])
+                                       reply_markup=res[1])
             await asyncio.sleep(0.1)
         except AiogramError as error:
             await error_handler(str(error), bot)

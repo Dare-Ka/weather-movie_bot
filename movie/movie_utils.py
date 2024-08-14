@@ -3,13 +3,13 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram import types
 import unicodedata
 import logging
-import requests
-import json
+import aiohttp
 import config
 
 
 async def get_random_movie(genre_name: str, movie_type='movie') -> (str, list, list, str):
     """Get random movie from Kinopoisk by genre and movie type"""
+    http_session = aiohttp.ClientSession()
     try:
         for token in config.API_KINOPOISK_TOKEN_LIST:
             headers = {'X-API-KEY': token}
@@ -41,13 +41,13 @@ async def get_random_movie(genre_name: str, movie_type='movie') -> (str, list, l
                                   'persons.name'],
                 'type': movie_type
             }
-            random_movie = requests.get(url_kinopoisk, params=params, headers=headers)
-            if random_movie.status_code == 200:
+            random_movie = await http_session.get(url_kinopoisk, params=params, headers=headers)
+            if random_movie.status == 200:
                 break
             else:
                 continue
         trailers = []
-        data = json.loads(random_movie.text)
+        data = await random_movie.json()
         persons = [person['name'] for person in data['persons']
                    if person['profession'] == 'актеры' and person['name'] is not None]
         if data['poster'] and data['poster']['url']:
@@ -87,6 +87,7 @@ async def get_random_movie(genre_name: str, movie_type='movie') -> (str, list, l
                 year=data["year"],
                 rating=round(data["rating"]["kp"], 1)
             )
+        await http_session.close()
         return movie, trailers_kb, trailers, poster
     except Exception as e:
         logging.error(e)
@@ -95,6 +96,7 @@ async def get_random_movie(genre_name: str, movie_type='movie') -> (str, list, l
 
 async def get_movie_description(name: str) -> list | None:
     """Get movie description by name"""
+    http_session = aiohttp.ClientSession()
     try:
         for token in config.API_KINOPOISK_TOKEN_LIST:
             headers = {'X-API-KEY': token}
@@ -104,13 +106,13 @@ async def get_movie_description(name: str) -> list | None:
                 'limit': 5,
                 'page': 1
             }
-            movies = requests.get(url_kinopoisk, params=params, headers=headers)
-            if movies.status_code == 200:
+            movies = await http_session.get(url_kinopoisk, params=params, headers=headers)
+            if movies.status == 200:
                 break
             else:
                 continue
         result = []
-        data = json.loads(movies.text)
+        data = await movies.json()
         for film in data['docs']:
             link = []
             if film['isSeries'] == True:
@@ -159,6 +161,7 @@ async def get_movie_description(name: str) -> list | None:
                     rating=round(film["rating"]["kp"], 1)
                 )
             result.append([movie, poster, link_kb])
+        await http_session.close()
         return result
     except Exception as e:
         logging.error(e)

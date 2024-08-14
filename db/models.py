@@ -5,7 +5,6 @@ class DataBase:
     def __init__(self, path):
         self.connect = sq.connect(path)
         self.cursor = self.connect.cursor()
-        self.create_table()
 
     async def create_table(self) -> None:
         """Create DataBase"""
