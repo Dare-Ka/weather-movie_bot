@@ -4,7 +4,12 @@ from aiogram import types, F, Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from admin.admin import new_user_event
+from core.models import db_helper
+from database.users.crud import add_user
+from database.users.schemas import UserCreate
 from .keyboard import main_menu_actions_kb_builder, MainMenuCb
 from .text import menu_text, hello
 
@@ -12,12 +17,21 @@ router = Router(name=__name__)
 
 
 @router.message(Command("start"), flags={"chat_action": "typing"})
-async def start(message: Message) -> None:
+async def start(
+    message: Message,
+) -> None:
     await asyncio.sleep(0.2)
     await message.answer(
         hello.format(name=message.from_user.first_name),
         reply_markup=main_menu_actions_kb_builder(),
     )
+    user = UserCreate(
+        tg_id=message.from_user.id,
+        tg_name=message.from_user.first_name,
+        username=message.from_user.username,
+    )
+    session: AsyncSession = await db_helper.get_scoped_session()
+    await new_user_event(await add_user(session=session, user_in=user))
 
 
 @router.message(F.text.lower() == "меню")

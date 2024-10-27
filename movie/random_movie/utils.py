@@ -6,7 +6,7 @@ from aiogram import types
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiohttp.web import HTTPNotFound
 
-from admin.errors import error_notifier
+from admin.admin import error_notifier
 from core.config import settings
 from movie.text import movie_types_dict, random_movie_description
 

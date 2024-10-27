@@ -6,7 +6,7 @@ from aiogram.exceptions import AiogramError
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from admin.errors import error_notifier
+from admin.admin import error_notifier
 from main_menu.keyboard import main_menu_kb_builder
 from movie.find_movie_by_name.keyboard import (
     find_movie_by_name_result_kb_builder,

@@ -4,7 +4,7 @@ from datetime import datetime
 import aiohttp
 
 import weather.text
-from admin.errors import error_notifier
+from admin.admin import error_notifier
 from core.config import settings
 from weather.text import weather_dict
 from .text import weather_description

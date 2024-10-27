@@ -3,6 +3,7 @@ __all__ = ("router",)
 from aiogram import Router
 
 from admin import router as admin_router
+from core.scheduler.mailing_settings import router as scheduler_router
 from events import router as events_router
 from meal.handler import router as meal_router
 from movie import router as movie_router
@@ -17,7 +18,8 @@ router.include_routers(
     tools_router,
     movie_router,
     weather_router,
-    events_router,
     meal_router,
+    scheduler_router,
     admin_router,
+    events_router,
 )

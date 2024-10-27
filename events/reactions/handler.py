@@ -20,4 +20,3 @@ async def reactions_handler(reaction: MessageReactionUpdated) -> None:
         await reaction.bot.send_message(
             chat_id=reaction.chat.id, text=choice(answer_emoji)
         )
-

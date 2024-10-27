@@ -11,6 +11,7 @@ class ToolsActions(str, Enum):
     create_event = "⏰ Напомни мне"
     send_message = "✍️ Отправить сообщение"
     todo_list = "📝 Список дел"
+    mailing_settings = "⚙️ Настройки"
 
 
 class ToolsActionsCb(CallbackData, prefix="tools"):
@@ -21,6 +22,9 @@ def tools_kb_builder() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for action in ToolsActions:
         builder.button(text=action.value, callback_data=ToolsActionsCb(action=action))
-    builder.button(text="⬅️ Назад", callback_data=MainMenuCb(main=MainMenu.menu).pack())
+    builder.button(
+        text="⬅️ Назад",
+        callback_data=MainMenuCb(main=MainMenu.menu).pack(),
+    )
     builder.adjust(1)
     return builder.as_markup()

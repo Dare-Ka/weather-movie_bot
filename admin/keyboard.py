@@ -13,7 +13,7 @@ class AdminActions(str, Enum):
     delete_user = "Удалить пользователя"
 
 
-class AdminActionsCb(CallbackData):
+class AdminActionsCb(CallbackData, prefix="admin"):
     action: AdminActions
 
 

@@ -1,22 +1,22 @@
+import asyncio
 import logging
 
-from core.config import settings
-
-from db.models import db, backup_db
-from core.middlewares.middleware import ThrottlingMiddleware
-from core.scheduler.settings import set_events
-from core.middlewares.apschedulermiddleware import SchedulerMiddleware
-from main_menu import router as main_router
-import asyncio
 from aiogram import Bot, Dispatcher
-from aiogram.utils.chat_action import ChatActionMiddleware
 from aiogram.fsm.storage.redis import RedisStorage
+from aiogram.utils.chat_action import ChatActionMiddleware
+
+from core.config import settings
+from core.middlewares.apschedulermiddleware import SchedulerMiddleware
+from core.middlewares.middleware import ThrottlingMiddleware
+from core.models import Base, db_helper
+from core.scheduler.settings import set_events
+from main_menu import router as main_router
 
 
 async def start_bot(bot: Bot):
     await bot.send_message(chat_id=settings.ADMIN_ID, text="Бот запущен!")
-    await db.create_table()
-    await backup_db.create_table()
+    async with db_helper.engin.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
 
 async def stop_bot(bot: Bot):
@@ -24,7 +24,7 @@ async def stop_bot(bot: Bot):
 
 
 async def main():
-    bot = Bot(token=settings.TESTBOT_TOKEN)
+    bot = Bot(token=settings.TESTS_BOT_TOKEN)
     storage = RedisStorage.from_url("redis://localhost:6379/0")
     throttling_storage = RedisStorage.from_url("redis://localhost:6379/1")
     scheduler = set_events(bot)

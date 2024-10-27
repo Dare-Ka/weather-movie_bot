@@ -8,7 +8,7 @@ from aiogram.utils.chat_action import ChatActionMiddleware
 from core.config import settings
 from core.middlewares.apschedulermiddleware import SchedulerMiddleware
 from core.middlewares.middleware import UserCheckerMiddleware
-from core.scheduler.settings import set_events
+from core.scheduler.mailing_settings import set_events
 from main_menu import router as main_router
 
 

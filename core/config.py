@@ -1,12 +1,13 @@
-from dotenv import load_dotenv
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-load_dotenv()
+BASE_DIR = Path(__file__).parent.parent
 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=BASE_DIR / "core/.env",
     )
     BOT_TOKEN: str
     TESTS_BOT_TOKEN: str
@@ -22,7 +23,17 @@ class Settings(BaseSettings):
     OTHER_API_KINOPOISK_TOKEN_5: str
 
 
+class DatabaseSettings(BaseSettings):
+    # model_config = SettingsConfigDict(
+    #     env_file=BASE_DIR / "core/.env",
+    # )
+    db_url: str = f"sqlite+aiosqlite:///{BASE_DIR}/core/tg.db"
+    db_echo: bool = True
+
+
 settings = Settings()
+
+db_settings = DatabaseSettings()
 
 API_KINOPOISK_TOKEN_LIST = [
     settings.API_KINOPOISK_TOKEN,
