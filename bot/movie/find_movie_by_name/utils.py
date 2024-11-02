@@ -13,7 +13,7 @@ from bot.movie.text import movie_types_dict, movie_description
 
 async def get_movie_description(
     http_session: aiohttp.ClientSession, name: str
-) -> list | None:
+) -> list[str, types.URLInputFile, InlineKeyboardMarkup] | None:
     """Get movie description by name"""
     headers = {"X-API-KEY": settings.movie.token}
     url_kinopoisk = settings.movie.url + "search"

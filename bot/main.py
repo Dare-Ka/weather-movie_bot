@@ -13,16 +13,16 @@ from bot.core.scheduler.settings import set_events
 from bot.main_menu import router as main_router
 
 
-async def start_bot(bot: Bot):
+async def start_bot(bot: Bot) -> None:
     await bot.send_message(chat_id=settings.bot.admin_id, text="Бот запущен!")
 
 
-async def stop_bot(bot: Bot):
+async def stop_bot(bot: Bot) -> None:
     await bot.send_message(chat_id=settings.bot.admin_id, text="Бот остановлен!")
     await db_helper.dispose()
 
 
-async def main():
+async def main() -> None:
     bot = Bot(token=settings.bot.token)
     storage = RedisStorage.from_url(settings.storage.base)
     throttling_storage = RedisStorage.from_url(settings.storage.throttling)

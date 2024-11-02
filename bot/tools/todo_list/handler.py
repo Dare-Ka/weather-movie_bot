@@ -8,7 +8,7 @@ router = Router(name=__name__)
 
 
 @router.callback_query(ToolsActionsCb.filter(F.action == ToolsActions.todo_list))
-async def handle_answer(callback: CallbackQuery):
+async def handle_answer(callback: CallbackQuery) -> None:
     await callback.answer()
     await callback.message.edit_text(
         text="В разработке)))", reply_markup=main_menu_kb_builder()

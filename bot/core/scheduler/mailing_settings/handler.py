@@ -27,7 +27,7 @@ router = Router(name=__name__)
     ToolsActionsCb.filter(F.action == ToolsActions.mailing_settings),
     flags={"chat_action": "typing"},
 )
-async def ask_settings(callback: CallbackQuery, state: FSMContext):
+async def ask_settings(callback: CallbackQuery, state: FSMContext) -> None:
     await state.clear()
     await callback.message.edit_text(
         text="Привет! Настраиваем рассылку!" "Отправлять утренние/вечерние сообщения?",
@@ -44,7 +44,7 @@ async def mailing_settings(
     callback: CallbackQuery,
     callback_data: MailingSettingsActionsCb,
     state: FSMContext,
-):
+) -> None:
     await state.clear()
     await callback.answer()
     mailing = callback_data.action.value
@@ -78,7 +78,7 @@ async def set_mailing_city_with_cb(
     callback: CallbackQuery,
     callback_data: MailingSettingsActionsCb,
     state: FSMContext,
-):
+) -> None:
     await state.clear()
     await callback.answer()
     city = callback_data.city.value
@@ -97,7 +97,7 @@ async def set_mailing_city_with_cb(
 
 
 @router.message(MailingSettings.city, flags={"chat_action": "typing"})
-async def set_mailing_city(message: Message, state: FSMContext):
+async def set_mailing_city(message: Message, state: FSMContext) -> None:
     await state.update_data(city=message.text)
     context_date = await state.get_data()
     city = context_date.get("city")

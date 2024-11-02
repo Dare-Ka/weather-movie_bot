@@ -60,7 +60,7 @@ async def show_main_menu(
 )
 async def show_main_menu_with_edit(
     callback: types.CallbackQuery, callback_data: MainMenuCb, state: FSMContext
-):
+) -> None:
     await callback.answer()
     await state.clear()
     await callback.message.edit_text(

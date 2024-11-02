@@ -13,7 +13,7 @@ from bot.movie.text import movie_types_dict, random_movie_description
 
 async def get_random_movie(
     http_session: aiohttp.ClientSession, genre_name: str, movie_type="movie"
-) -> (str, list, list, str):
+) -> list[str, InlineKeyboardMarkup, types.URLInputFile] | None:
     """Get random movie from Kinopoisk by genre and movie type"""
     headers = {"X-API-KEY": settings.movie.token}
     url_kinopoisk = settings.movie.url + "random"
@@ -49,7 +49,6 @@ async def get_random_movie(
         "type": movie_type,
     }
     picture_path = Path(__file__).parent.parent / "movie_pic.jpg"
-    print(picture_path)
     try:
         async with http_session.get(
             url_kinopoisk, params=params, headers=headers

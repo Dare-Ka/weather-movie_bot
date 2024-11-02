@@ -6,6 +6,7 @@ from bot.main_menu.keyboard import main_menu_kb_builder
 
 
 async def error_notifier(func_name: str, error: str) -> None:
+    """Notify the admin about errors"""
     bot = Bot(token=settings.bot.token)
     description = f"{func_name}:\n{error}"
     await bot.send_message(

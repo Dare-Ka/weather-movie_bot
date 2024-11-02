@@ -43,8 +43,8 @@ class ThrottlingMiddleware(BaseMiddleware):
                     )
                 return
             await self.storage.redis.set(name=user, value=1, ex=1)
-
             return await handler(event, data)
+
         if event.callback_query:
             async with db_helper.get_session() as session:
                 found_user = await get_user(
@@ -69,7 +69,7 @@ class ThrottlingMiddleware(BaseMiddleware):
                     )
                 return
             await self.storage.redis.set(name=user, value=1, ex=1)
-
             return await handler(event, data)
+
         if event.message and event.message.text == "/start":
             return await handler(event, data)

@@ -10,7 +10,9 @@ from bot.weather.text import weather_dict, weather_error
 from .text import weather_description
 
 
-async def get_weather_three_days(http_session: aiohttp.ClientSession, city: str) -> str:
+async def get_weather_three_days(
+    http_session: aiohttp.ClientSession, city: str
+) -> str | None:
     """Get weather description by city for three days"""
     url = settings.weather.url
     headers = {
