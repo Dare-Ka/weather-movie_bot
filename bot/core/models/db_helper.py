@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
 )
 
-from bot.core.config import settings
+from core.config import settings
 
 
 class DatabaseHelper:
@@ -23,13 +23,11 @@ class DatabaseHelper:
             expire_on_commit=False,
         )
 
+    async def dispose(self) -> None:
+        await self.engine.dispose()
+
     @asynccontextmanager
     async def get_session(self) -> AsyncGenerator[AsyncSession, None]:
-        # session = async_scoped_session(
-        #     session_factory=self.session_factory,
-        #     scopefunc=current_task,
-        # )
-        # return session
         async with self.session_factory() as session:
             yield session
 

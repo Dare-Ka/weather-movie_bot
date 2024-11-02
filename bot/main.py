@@ -8,15 +8,13 @@ from aiogram.utils.chat_action import ChatActionMiddleware
 from bot.core.config import settings
 from bot.core.middlewares.apschedulermiddleware import SchedulerMiddleware
 from bot.core.middlewares.middleware import ThrottlingMiddleware
-from bot.core.models import Base, db_helper
+from bot.core.models import db_helper
 from bot.core.scheduler.settings import set_events
 from bot.main_menu import router as main_router
 
 
 async def start_bot(bot: Bot):
     await bot.send_message(chat_id=settings.bot.admin_id, text="Бот запущен!")
-    async with db_helper.engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
 
 
 async def stop_bot(bot: Bot):
