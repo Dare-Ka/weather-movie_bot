@@ -6,6 +6,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 BASE_DIR = Path(__file__).parent.parent.parent
 
 
+class StorageConfig(BaseModel):
+    base: str
+    throttling: str
+
+
 class DatabaseConfig(BaseModel):
     url: str
     echo: bool = False
@@ -36,6 +41,7 @@ class Settings(BaseSettings):
     movie: MovieConfig
     weather: WeatherConfig
     bot: BotConfig
+    storage: StorageConfig
 
 
 settings = Settings()

@@ -49,7 +49,8 @@ async def show_main_menu(
     await callback.answer()
     await state.clear()
     await callback.message.answer(
-        callback_data.main.value, reply_markup=main_menu_actions_kb_builder()
+        callback_data.main.value,
+        reply_markup=main_menu_actions_kb_builder(),
     )
 
 
@@ -63,5 +64,6 @@ async def show_main_menu_with_edit(
     await callback.answer()
     await state.clear()
     await callback.message.edit_text(
-        callback_data.main.value, reply_markup=main_menu_actions_kb_builder()
+        callback_data.main.value,
+        reply_markup=main_menu_actions_kb_builder(),
     )

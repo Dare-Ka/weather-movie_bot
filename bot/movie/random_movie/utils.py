@@ -49,6 +49,7 @@ async def get_random_movie(
         "type": movie_type,
     }
     picture_path = Path(__file__).parent.parent / "movie_pic.jpg"
+    print(picture_path)
     try:
         async with http_session.get(
             url_kinopoisk, params=params, headers=headers

@@ -101,7 +101,7 @@ async def set_mailing_city(message: Message, state: FSMContext):
     await state.update_data(city=message.text)
     context_date = await state.get_data()
     city = context_date.get("city")
-    async with aiohttp.Session() as http_session:
+    async with aiohttp.ClientSession() as http_session:
         weather = await get_weather_today(http_session=http_session, city=city)
     if weather:
         async with db_helper.get_session() as session:

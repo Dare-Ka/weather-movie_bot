@@ -13,8 +13,8 @@ from bot.weather.keyboard import Cities
 
 
 class MailingSettingsActions(str, Enum):
-    YES = "да"
-    NO = "нет"
+    YES = "Да"
+    NO = "Нет"
 
 
 class MailingSettingsActionsCb(CallbackData, prefix="mailing_settings"):

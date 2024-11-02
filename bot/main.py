@@ -24,8 +24,8 @@ async def stop_bot(bot: Bot):
 
 async def main():
     bot = Bot(token=settings.bot.token)
-    storage = RedisStorage.from_url("redis://localhost:6379/0")
-    throttling_storage = RedisStorage.from_url("redis://localhost:6379/1")
+    storage = RedisStorage.from_url(settings.storage.base)
+    throttling_storage = RedisStorage.from_url(settings.storage.throttling)
     scheduler = set_events(bot)
     dp = Dispatcher(storage=storage)
     dp.startup.register(start_bot)

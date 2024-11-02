@@ -65,6 +65,7 @@ async def send_mailing(
                 chat_id=settings.bot.admin_id,
                 text=f"Пользователь c id {user.tg_id} деактивирован!",
             )
+    await message.answer("Рассылка завершена", reply_markup=build_admin_kb())
     await state.clear()
 
 
@@ -134,6 +135,7 @@ async def send_message(message: types.Message, state: FSMContext, bot: Bot):
             chat_id=settings.bot.admin_id,
             text=f"Пользователь c id {tg_id} деактивирован!",
         )
+    await message.answer("Сообщение доставлено!", reply_markup=build_admin_kb())
     await state.clear()
 
 
