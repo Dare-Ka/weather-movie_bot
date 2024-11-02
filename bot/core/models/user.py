@@ -10,3 +10,4 @@ class User(Base):
     username: Mapped[str] = mapped_column(unique=True)
     mailing: Mapped[bool] = mapped_column(Boolean(), default=True)
     city: Mapped[str] = mapped_column(String(), nullable=True)
+    active: Mapped[bool] = mapped_column(Boolean(), default=True)

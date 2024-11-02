@@ -7,7 +7,7 @@ from core.schemas.users.schemas import UserCreate, UserUpdate
 
 
 async def get_users(session: AsyncSession) -> list[User]:
-    statement = select(User).order_by(User.id)
+    statement = select(User).order_by(User.id).where(User.active == True)
     result: Result = await session.execute(statement)
     users = result.scalars().all()
     return users

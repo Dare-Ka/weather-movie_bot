@@ -6,7 +6,8 @@ from bot.admin.admin import error_notifier
 from bot.admin.keyboard import build_admin_kb, AdminActionsCb, AdminActions
 from bot.core.config import settings
 from bot.core.models import db_helper
-from core.schemas.users.crud import get_users, delete_user, get_user
+from core.schemas.users.crud import get_users, delete_user, get_user, update_user
+from core.schemas.users.schemas import UserUpdate
 from .state import AdminStates
 
 router = Router()
@@ -51,10 +52,18 @@ async def send_mailing(
         except TelegramForbiddenError as error:
             await error_notifier(func_name=send_mailing.__name__, error=error)
             async with db_helper.get_session() as session:
-                await delete_user(session=session, user=user)
+                found_user = await get_user(session=session, tg_id=user.tg_id)
+                user_update = UserUpdate(
+                    tg_id=user.tg_id,
+                    mailing=False,
+                    active=False,
+                )
+                await update_user(
+                    session=session, user=found_user, user_update=user_update
+                )
             await bot.send_message(
                 chat_id=settings.bot.admin_id,
-                text=f"Пользователь c id {user.tg_id} удален!",
+                text=f"Пользователь c id {user.tg_id} деактивирован!",
             )
     await state.clear()
 
@@ -101,7 +110,8 @@ async def get_message(message: types.Message, state: FSMContext):
 
 
 @router.message(
-    AdminStates.personal_mailing_text, F.from_user.id.in_(settings.bot.admin_id)
+    AdminStates.personal_mailing_text,
+    F.from_user.id == settings.bot.admin_id,
 )
 async def send_message(message: types.Message, state: FSMContext, bot: Bot):
     context_data = await state.get_data()
@@ -113,10 +123,16 @@ async def send_message(message: types.Message, state: FSMContext, bot: Bot):
     except TelegramForbiddenError as error:
         await error_notifier(func_name=send_mailing.__name__, error=error)
         async with db_helper.get_session() as session:
-            await delete_user(session=session, user=user)
+            found_user = await get_user(session=session, tg_id=user.tg_id)
+            user_update = UserUpdate(
+                tg_id=user.tg_id,
+                mailing=False,
+                active=False,
+            )
+            await update_user(session=session, user=found_user, user_update=user_update)
         await bot.send_message(
             chat_id=settings.bot.admin_id,
-            text=f"Пользователь c id {tg_id} удален!",
+            text=f"Пользователь c id {tg_id} деактивирован!",
         )
     await state.clear()
 
@@ -127,11 +143,11 @@ async def send_message(message: types.Message, state: FSMContext, bot: Bot):
 )
 async def ask_user_id(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text="Введи tg_id пользователя:")
-    await state.set_state(AdminStates.user_id)
+    await state.set_state(AdminStates.deleting_user_id)
 
 
 @router.message(
-    AdminStates.user_id,
+    AdminStates.deleting_user_id,
     F.from_user.id == settings.bot.admin_id,
 )
 async def delete_user_by_id(message: types.Message, state: FSMContext):

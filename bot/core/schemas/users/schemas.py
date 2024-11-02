@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 
 class UserBase(BaseModel):
@@ -14,11 +14,6 @@ class UserCreate(UserBase):
 class UserUpdate(UserCreate):
     tg_name: str | None = None
     username: str | None = None
-    mailing: bool = True
+    mailing: bool | None = None
     city: str | None = None
-
-
-class User(UserBase):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: int
+    active: bool | None = None

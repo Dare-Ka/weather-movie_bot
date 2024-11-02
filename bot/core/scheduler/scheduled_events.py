@@ -13,7 +13,8 @@ from bot.movie.random_movie.keyboard import trailers_kb_builder
 from bot.movie.random_movie.utils import get_random_movie
 from bot.weather.todays_weather.keyboard import weather_today_result_kb_builder
 from bot.weather.todays_weather.utils import get_weather_today
-from core.schemas.users.crud import get_users, delete_user, get_mailing_users
+from core.schemas.users.crud import get_users, get_mailing_users, get_user, update_user
+from core.schemas.users.schemas import UserUpdate
 
 
 async def good_morning(bot: Bot) -> None:
@@ -42,10 +43,18 @@ async def good_morning(bot: Bot) -> None:
                 )
         except TelegramForbiddenError:
             async with db_helper.get_session() as session:
-                await delete_user(session=session, user=user)
+                found_user = await get_user(session=session, tg_id=user.tg_id)
+                user_update = UserUpdate(
+                    tg_id=user.tg_id,
+                    mailing=False,
+                    active=False,
+                )
+                await update_user(
+                    session=session, user=found_user, user_update=user_update
+                )
             await bot.send_message(
                 chat_id=settings.bot.admin_id,
-                text=f"Пользователь c id {user.tg_id} удален!",
+                text=f"Пользователь c id {user.tg_id} деактивирован!",
             )
 
 
@@ -65,10 +74,18 @@ async def good_night(bot: Bot) -> None:
             )
         except TelegramForbiddenError:
             async with db_helper.get_session() as session:
-                await delete_user(session=session, user=user)
+                found_user = await get_user(session=session, tg_id=user.tg_id)
+                user_update = UserUpdate(
+                    tg_id=user.tg_id,
+                    mailing=False,
+                    active=False,
+                )
+                await update_user(
+                    session=session, user=found_user, user_update=user_update
+                )
             await bot.send_message(
                 chat_id=settings.bot.admin_id,
-                text=f"Пользователь c id {user.tg_id} удален!",
+                text=f"Пользователь c id {user.tg_id} деактивирован!",
             )
 
 
@@ -99,10 +116,18 @@ async def movie_mailing(bot: Bot) -> None:
             )
         except TelegramForbiddenError:
             async with db_helper.get_session() as session:
-                await delete_user(session=session, user=user)
+                found_user = await get_user(session=session, tg_id=user.tg_id)
+                user_update = UserUpdate(
+                    tg_id=user.tg_id,
+                    mailing=False,
+                    active=False,
+                )
+                await update_user(
+                    session=session, user=found_user, user_update=user_update
+                )
             await bot.send_message(
                 chat_id=settings.bot.admin_id,
-                text=f"Пользователь c id {user.tg_id} удален!",
+                text=f"Пользователь c id {user.tg_id} деактивирован!",
             )
 
 
@@ -132,10 +157,18 @@ async def good_vacation(bot: Bot) -> None:
                 )
         except TelegramForbiddenError:
             async with db_helper.get_session() as session:
-                await delete_user(session=session, user=user)
+                found_user = await get_user(session=session, tg_id=user.tg_id)
+                user_update = UserUpdate(
+                    tg_id=user.tg_id,
+                    mailing=False,
+                    active=False,
+                )
+                await update_user(
+                    session=session, user=found_user, user_update=user_update
+                )
             await bot.send_message(
                 chat_id=settings.bot.admin_id,
-                text=f"Пользователь c id {user.tg_id} удален!",
+                text=f"Пользователь c id {user.tg_id} деактивирован!",
             )
 
 
@@ -156,8 +189,16 @@ async def happy_ny(bot: Bot) -> None:
             )
         except TelegramForbiddenError:
             async with db_helper.get_session() as session:
-                await delete_user(session=session, user=user)
+                found_user = await get_user(session=session, tg_id=user.tg_id)
+                user_update = UserUpdate(
+                    tg_id=user.tg_id,
+                    mailing=False,
+                    active=False,
+                )
+                await update_user(
+                    session=session, user=found_user, user_update=user_update
+                )
             await bot.send_message(
                 chat_id=settings.bot.admin_id,
-                text=f"Пользователь c id {user.tg_id} удален!",
+                text=f"Пользователь c id {user.tg_id} деактивирован!",
             )
