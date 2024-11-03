@@ -81,9 +81,10 @@ async def get_users_list(callback: types.CallbackQuery) -> None:
         users = await get_users(session=session)
 
     _ = "\n"
+    delim = "----------------------\n"
     users_list = (
         f"У нас {len(users)} пользователей:\n"
-        f'{" | ".join(f"ID: {user.tg_id}{_}username: @{user.username}{_}Name: {user.tg_name}{_}" for user in users)}'
+        f'{_.join(f"{delim}•ID: {user.tg_id}{_}•username: @{user.username}{_}•Name: {user.tg_name}{_}{delim}" for user in users)}'
     )
     if len(users_list) > 4095:
         for message in range(0, len(users_list), 4095):

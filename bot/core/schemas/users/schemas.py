@@ -3,8 +3,8 @@ from pydantic import BaseModel
 
 class UserBase(BaseModel):
     tg_id: int
-    tg_name: str
-    username: str
+    tg_name: str | None
+    username: str | None
 
 
 class UserCreate(UserBase):
