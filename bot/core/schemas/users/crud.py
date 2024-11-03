@@ -23,9 +23,11 @@ async def get_mailing_users(session: AsyncSession) -> list[User]:
 async def get_user(session: AsyncSession, tg_id: int) -> User | None:
     statement = select(User).where(User.tg_id == tg_id)
     result: Result = await session.execute(statement)
-    user_id = result.scalar_one().id
-    user = await session.get(User, user_id)
-    return user
+    user_by_tg_id: tuple[User, None] = result.first()
+    if user_by_tg_id:
+        user = await session.get(User, user_by_tg_id[0].id)
+        return user
+    return None
 
 
 async def add_user(session: AsyncSession, user_in: UserCreate) -> User:

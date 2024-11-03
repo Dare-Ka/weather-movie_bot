@@ -38,6 +38,7 @@ async def ask_mailing(callback: types.CallbackQuery, state: FSMContext) -> None:
 @router.message(
     AdminStates.mailing_text,
     F.from_user.id == settings.bot.admin_id,
+    flags={"chat_action": "typing"},
 )
 async def send_mailing(
     message: types.Message,
@@ -73,6 +74,7 @@ async def send_mailing(
 @router.callback_query(
     AdminActionsCb.filter(F.action == AdminActions.get_users_list),
     F.from_user.id == settings.bot.admin_id,
+    flags={"chat_action": "typing"},
 )
 async def get_users_list(callback: types.CallbackQuery) -> None:
     async with db_helper.get_session() as session:
@@ -96,6 +98,7 @@ async def get_users_list(callback: types.CallbackQuery) -> None:
 @router.callback_query(
     AdminActionsCb.filter(F.action == AdminActions.send_message),
     F.from_user.id == settings.bot.admin_id,
+    flags={"chat_action": "typing"},
 )
 async def get_user_id(callback: types.CallbackQuery, state: FSMContext) -> None:
     await callback.message.answer(text="Введи id пользователя:")
@@ -105,6 +108,7 @@ async def get_user_id(callback: types.CallbackQuery, state: FSMContext) -> None:
 @router.message(
     AdminStates.user_id,
     F.from_user.id == settings.bot.admin_id,
+    flags={"chat_action": "typing"},
 )
 async def get_message(message: types.Message, state: FSMContext) -> None:
     await state.update_data(tg_id=message.text)
@@ -115,6 +119,7 @@ async def get_message(message: types.Message, state: FSMContext) -> None:
 @router.message(
     AdminStates.personal_mailing_text,
     F.from_user.id == settings.bot.admin_id,
+    flags={"chat_action": "typing"},
 )
 async def send_message(message: types.Message, state: FSMContext, bot: Bot) -> None:
     context_data = await state.get_data()
@@ -143,6 +148,7 @@ async def send_message(message: types.Message, state: FSMContext, bot: Bot) -> N
 @router.callback_query(
     AdminActionsCb.filter(F.action == AdminActions.delete_user),
     F.from_user.id == settings.bot.admin_id,
+    flags={"chat_action": "typing"},
 )
 async def ask_user_id(callback: types.CallbackQuery, state: FSMContext) -> None:
     await callback.message.edit_text(text="Введи tg_id пользователя:")
@@ -152,6 +158,7 @@ async def ask_user_id(callback: types.CallbackQuery, state: FSMContext) -> None:
 @router.message(
     AdminStates.deleting_user_id,
     F.from_user.id == settings.bot.admin_id,
+    flags={"chat_action": "typing"},
 )
 async def delete_user_by_id(message: types.Message, state: FSMContext) -> None:
     tg_id = message.text

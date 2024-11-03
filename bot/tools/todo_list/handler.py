@@ -7,7 +7,10 @@ from bot.tools.keyboard import ToolsActionsCb, ToolsActions
 router = Router(name=__name__)
 
 
-@router.callback_query(ToolsActionsCb.filter(F.action == ToolsActions.todo_list))
+@router.callback_query(
+    ToolsActionsCb.filter(F.action == ToolsActions.todo_list),
+    flags={"chat_action": "typing"},
+)
 async def handle_answer(callback: CallbackQuery) -> None:
     await callback.answer()
     await callback.message.edit_text(

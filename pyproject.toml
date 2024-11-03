@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "harper"
+name = "weather&movie"
 version = "2.0"
 description = "My own telegram bot"
 authors = ["Maksim Kozhin <a.zurnaaaa@gmail.com>"]
@@ -13,11 +13,13 @@ apscheduler = "^3.10.4"
 apscheduler-di = "^0.1.0"
 redis = "^5.0.8"
 pydantic-settings = "^2.5.2"
-sqlalchemy = {extras = ["asyncio"], version = "^2.0.36"}
-aiosqlite = "^0.20.0"
+pydentic = "^0.0.1.dev3"
 alembic = "^1.13.3"
-black = "^24.10.0"
+sqlalchemy = { extras = ["asyncio"], version = "^2.0.36" }
+aiosqlite = "^0.20.0"
 
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
 
 [build-system]
 requires = ["poetry-core"]

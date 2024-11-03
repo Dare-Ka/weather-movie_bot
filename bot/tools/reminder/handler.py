@@ -34,7 +34,7 @@ async def ask_date(callback: CallbackQuery, state: FSMContext) -> None:
 
 
 @router.message(Reminder.hour, flags={"chat_action": "typing"})
-async def set_time_with_text(message: Message, state: FSMContext) -> None:
+async def set_hour_with_text(message: Message, state: FSMContext) -> None:
     await state.update_data(delta_hour=float(message.text))
     await message.answer("Через сколько минут напомнить?", reply_markup=minutes_kb())
     await state.set_state(Reminder.minute)
