@@ -5,16 +5,16 @@ import aiohttp
 from aiogram import Bot, types
 from aiogram.exceptions import TelegramForbiddenError
 
-import bot.core.scheduler.text as text
-from bot.core.config import settings
-from bot.core.models import db_helper
-from bot.main_menu.keyboard import main_menu_kb_builder
-from bot.movie.random_movie.keyboard import trailers_kb_builder
-from bot.movie.random_movie.utils import get_random_movie
-from bot.weather.todays_weather.keyboard import weather_today_result_kb_builder
-from bot.weather.todays_weather.utils import get_weather_today
+import core.scheduler.text as text
+from core.config import settings
+from core.models import db_helper
 from core.schemas.users.crud import get_users, get_mailing_users, get_user, update_user
 from core.schemas.users.schemas import UserUpdate
+from main_menu.keyboard import main_menu_kb_builder
+from movie.random_movie.keyboard import trailers_kb_builder
+from movie.random_movie.utils import get_random_movie
+from weather.todays_weather.keyboard import weather_today_result_kb_builder
+from weather.todays_weather.utils import get_weather_today
 
 
 async def good_morning(bot: Bot) -> None:

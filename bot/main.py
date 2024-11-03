@@ -5,12 +5,12 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.utils.chat_action import ChatActionMiddleware
 
-from bot.core.config import settings
-from bot.core.middlewares.apschedulermiddleware import SchedulerMiddleware
-from bot.core.middlewares.middleware import ThrottlingMiddleware
-from bot.core.models import db_helper
-from bot.core.scheduler.settings import set_events
-from bot.main_menu import router as main_router
+from core.config import settings
+from core.middlewares.apschedulermiddleware import SchedulerMiddleware
+from core.middlewares.middleware import ThrottlingMiddleware
+from core.models import db_helper
+from core.scheduler.settings import set_events
+from main_menu import router as main_router
 
 
 async def start_bot(bot: Bot) -> None:

@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from bot.main_menu.keyboard import (
+from main_menu.keyboard import (
     MainMenu,
     MainMenuCb,
     MainMenuActionsCb,

@@ -1,6 +1,6 @@
 from random import choice
 
-from bot.meal.text import dinner_dict
+from meal.text import dinner_dict
 
 
 async def get_random_meal() -> str:

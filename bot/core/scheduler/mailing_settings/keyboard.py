@@ -3,13 +3,13 @@ from enum import Enum
 from aiogram.filters.callback_data import CallbackData
 from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup
 
-from bot.main_menu.keyboard import (
+from main_menu.keyboard import (
     MainMenuActions,
     MainMenuActionsCb,
     main_menu_kb_builder,
 )
-from bot.tools.keyboard import ToolsActionsCb, ToolsActions
-from bot.weather.keyboard import Cities
+from tools.keyboard import ToolsActionsCb, ToolsActions
+from weather.keyboard import Cities
 
 
 class MailingSettingsActions(str, Enum):

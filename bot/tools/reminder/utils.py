@@ -1,6 +1,6 @@
 from aiogram import Bot
 
-from bot.main_menu.keyboard import main_menu_kb_builder
+from main_menu.keyboard import main_menu_kb_builder
 
 
 async def reminder(bot: Bot, name, tg_id, event) -> None:

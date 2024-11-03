@@ -5,8 +5,8 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from bot.admin.admin import new_user_event
-from bot.core.models import db_helper
+from admin.admin import new_user_event
+from core.models import db_helper
 from core.schemas.users.crud import add_user, get_user, update_user
 from core.schemas.users.schemas import UserCreate, UserUpdate
 from .keyboard import main_menu_actions_kb_builder, MainMenuCb

@@ -6,9 +6,9 @@ from aiogram import types
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiohttp.web import HTTPNotFound
 
-from bot.admin.admin import error_notifier
-from bot.core.config import settings
-from bot.movie.text import movie_types_dict, random_movie_description
+from admin.admin import error_notifier
+from core.config import settings
+from movie.text import movie_types_dict, random_movie_description
 
 
 async def get_random_movie(

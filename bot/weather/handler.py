@@ -2,7 +2,7 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 
-from bot.main_menu.keyboard import MainMenuActionsCb, MainMenuActions
+from main_menu.keyboard import MainMenuActionsCb, MainMenuActions
 from .keyboard import weather_action_kb_builder
 
 router = Router(name=__name__)

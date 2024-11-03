@@ -6,8 +6,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from bot.main_menu.keyboard import main_menu_kb_builder
-from bot.tools.keyboard import ToolsActionsCb, ToolsActions
+from main_menu.keyboard import main_menu_kb_builder
+from tools.keyboard import ToolsActionsCb, ToolsActions
 from .keyboard import (
     hours_kb,
     ReminderCallbackData,

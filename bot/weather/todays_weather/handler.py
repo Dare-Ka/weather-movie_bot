@@ -5,11 +5,11 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 
-from bot.main_menu.keyboard import main_menu_kb_builder
-from bot.weather.keyboard import WeatherActionCb, WeatherAction
-from bot.weather.state import Weather
-from bot.weather.text import weather_error
-from bot.weather.todays_weather.utils import get_weather_today
+from main_menu.keyboard import main_menu_kb_builder
+from weather.keyboard import WeatherActionCb, WeatherAction
+from weather.state import Weather
+from weather.text import weather_error
+from weather.todays_weather.utils import get_weather_today
 from .keyboard import (
     WeatherTodayCb,
     weather_today_kb_builder,

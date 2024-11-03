@@ -2,10 +2,10 @@ from aiogram import Bot, F, types, Router
 from aiogram.exceptions import TelegramForbiddenError
 from aiogram.fsm.context import FSMContext
 
-from bot.admin.admin import error_notifier
-from bot.admin.keyboard import build_admin_kb, AdminActionsCb, AdminActions
-from bot.core.config import settings
-from bot.core.models import db_helper
+from admin.admin import error_notifier
+from admin.keyboard import build_admin_kb, AdminActionsCb, AdminActions
+from core.config import settings
+from core.models import db_helper
 from core.schemas.users.crud import get_users, delete_user, get_user, update_user
 from core.schemas.users.schemas import UserUpdate
 from .state import AdminStates

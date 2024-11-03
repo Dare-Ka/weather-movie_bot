@@ -1,8 +1,8 @@
 from aiogram import Bot
 
-from bot.core.config import settings
-from bot.core.models import User
-from bot.main_menu.keyboard import main_menu_kb_builder
+from core.config import settings
+from core.models import User
+from main_menu.keyboard import main_menu_kb_builder
 
 
 async def error_notifier(func_name: str, error: str) -> None:

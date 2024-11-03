@@ -2,9 +2,9 @@ import asyncio
 
 from aiogram import types, F, Router
 
-from bot.main_menu.keyboard import MainMenuActionsCb, MainMenuActions
-from bot.meal.keyboard import meal_kb_builder
-from bot.meal.utils import get_random_meal
+from main_menu.keyboard import MainMenuActionsCb, MainMenuActions
+from meal.keyboard import meal_kb_builder
+from meal.utils import get_random_meal
 
 router = Router(name=__name__)
 

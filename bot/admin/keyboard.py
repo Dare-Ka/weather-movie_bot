@@ -3,7 +3,7 @@ from enum import Enum
 from aiogram.filters.callback_data import CallbackData
 from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup
 
-from bot.main_menu.keyboard import MainMenuCb, MainMenu
+from main_menu.keyboard import MainMenuCb, MainMenu
 
 
 class AdminActions(str, Enum):

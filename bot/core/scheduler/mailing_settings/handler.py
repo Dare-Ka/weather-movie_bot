@@ -5,13 +5,13 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 
-from bot.core.models import db_helper
-from bot.main_menu.keyboard import main_menu_kb_builder
-from bot.tools.keyboard import ToolsActionsCb, ToolsActions
-from bot.weather.text import weather_error
-from bot.weather.todays_weather.utils import get_weather_today
+from core.models import db_helper
 from core.schemas.users.crud import update_user, get_user
 from core.schemas.users.schemas import UserUpdate
+from main_menu.keyboard import main_menu_kb_builder
+from tools.keyboard import ToolsActionsCb, ToolsActions
+from weather.text import weather_error
+from weather.todays_weather.utils import get_weather_today
 from .keyboard import (
     mailing_settings_actions_kb_builder,
     MailingSettingsActionsCb,

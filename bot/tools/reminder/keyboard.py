@@ -4,8 +4,8 @@ from aiogram.filters.callback_data import CallbackData
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from bot.main_menu.keyboard import MainMenuActionsCb, MainMenuActions
-from bot.tools.keyboard import ToolsActionsCb, ToolsActions
+from main_menu.keyboard import MainMenuActionsCb, MainMenuActions
+from tools.keyboard import ToolsActionsCb, ToolsActions
 
 
 class Hours(Enum):

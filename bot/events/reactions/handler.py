@@ -3,7 +3,7 @@ from random import choice
 from aiogram import Router
 from aiogram.types import MessageReactionUpdated, Message, ReactionTypeEmoji
 
-from bot.events.reactions.text import reactions, answer_emoji
+from events.reactions.text import reactions, answer_emoji
 
 router = Router(name=__name__)
 

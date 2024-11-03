@@ -4,13 +4,13 @@ from aiogram.filters.callback_data import CallbackData
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from bot.main_menu.keyboard import (
+from main_menu.keyboard import (
     MainMenuCb,
     MainMenu,
     MainMenuActionsCb,
     MainMenuActions,
 )
-from bot.movie.keyboard import MovieActionsCb, MovieActions
+from movie.keyboard import MovieActionsCb, MovieActions
 
 
 class MovieTypes(str, Enum):

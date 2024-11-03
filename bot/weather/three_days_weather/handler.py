@@ -5,16 +5,16 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 
-from bot.main_menu.keyboard import main_menu_kb_builder
-from bot.weather.keyboard import WeatherActionCb, WeatherAction
-from bot.weather.state import Weather
-from bot.weather.text import weather_error
-from bot.weather.three_days_weather.keyboard import (
+from main_menu.keyboard import main_menu_kb_builder
+from weather.keyboard import WeatherActionCb, WeatherAction
+from weather.state import Weather
+from weather.text import weather_error
+from weather.three_days_weather.keyboard import (
     WeatherThreeDaysCb,
     weather_three_days_kb_builder,
     three_days_weather_result_kb_builder,
 )
-from bot.weather.three_days_weather.utils import get_weather_three_days
+from weather.three_days_weather.utils import get_weather_three_days
 
 router = Router(name=__name__)
 

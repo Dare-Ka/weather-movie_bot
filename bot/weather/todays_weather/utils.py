@@ -3,9 +3,9 @@ from datetime import datetime
 
 import aiohttp
 
-from bot.admin.admin import error_notifier
-from bot.core.config import settings
-from bot.weather.text import weather_dict
+from admin.admin import error_notifier
+from core.config import settings
+from weather.text import weather_dict
 from .text import weather_description
 
 

@@ -2,8 +2,8 @@ from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 
-from bot.main_menu.keyboard import MainMenuActionsCb, MainMenuActions
-from bot.tools.keyboard import tools_kb_builder
+from main_menu.keyboard import MainMenuActionsCb, MainMenuActions
+from tools.keyboard import tools_kb_builder
 
 router = Router(name=__name__)
 

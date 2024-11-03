@@ -6,16 +6,16 @@ from aiogram.exceptions import AiogramError
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from bot.admin.admin import error_notifier
-from bot.main_menu.keyboard import main_menu_kb_builder
-from bot.movie.find_movie_by_name.keyboard import (
+from admin.admin import error_notifier
+from main_menu.keyboard import main_menu_kb_builder
+from movie.find_movie_by_name.keyboard import (
     find_movie_by_name_result_kb_builder,
     find_movie_actions_kb_builder,
 )
-from bot.movie.find_movie_by_name.utils import get_movie_description
-from bot.movie.keyboard import MovieActionsCb, MovieActions
-from bot.movie.state import Movie
-from bot.movie.text import movie_error
+from movie.find_movie_by_name.utils import get_movie_description
+from movie.keyboard import MovieActionsCb, MovieActions
+from movie.state import Movie
+from movie.text import movie_error
 
 router = Router(name=__name__)
 

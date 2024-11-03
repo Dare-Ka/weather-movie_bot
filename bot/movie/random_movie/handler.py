@@ -6,17 +6,17 @@ from aiogram.exceptions import AiogramError
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 
-from bot.admin.admin import error_notifier
-from bot.main_menu.keyboard import main_menu_kb_builder
-from bot.movie.keyboard import MovieActionsCb, MovieActions
-from bot.movie.random_movie.keyboard import (
+from admin.admin import error_notifier
+from main_menu.keyboard import main_menu_kb_builder
+from movie.keyboard import MovieActionsCb, MovieActions
+from movie.random_movie.keyboard import (
     show_movie_genres_kb,
     show_movie_types_kb,
     trailers_kb_builder,
     MovieCb,
 )
-from bot.movie.random_movie.utils import get_random_movie
-from bot.movie.text import random_movie_error, movie_types_dict
+from movie.random_movie.utils import get_random_movie
+from movie.text import random_movie_error, movie_types_dict
 
 router = Router(name=__name__)
 
