@@ -7,7 +7,7 @@ Weather&Movie — это multy-tool Telegram бот, который предос
 1. **Клонируйте репозиторий:**
 
    ```
-   git clone https://github.com/yourusername/weather-movie-bot.git
+   git clone https://github.com/Dare-Ka/weather-movie_bot.git
    cd weather-movie_bot
    ```
 2. **Установите Poetry (если он еще не установлен):**
