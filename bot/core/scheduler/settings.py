@@ -5,7 +5,7 @@ from apscheduler.jobstores.redis import RedisJobStore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler_di import ContextSchedulerDecorator
 
-from bot.core.scheduler import scheduled_events
+from core.scheduler import scheduled_events
 
 
 def set_events(bot: Bot) -> ContextSchedulerDecorator:

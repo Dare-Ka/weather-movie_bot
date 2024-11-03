@@ -4,7 +4,7 @@ from aiogram import BaseMiddleware
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.types import Update
 
-from bot.core.models import db_helper
+from core.models import db_helper
 from core.schemas.users.crud import update_user, get_user
 from core.schemas.users.schemas import UserUpdate
 
